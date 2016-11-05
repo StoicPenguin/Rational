@@ -59,7 +59,7 @@ struct Rational {
     ///     - t: A tuple of integers
     /// - Returns: The tuple with the common divisor divided out
     private func reducedTuple(_ t: (Int, Int)) -> (Int, Int) {
-        guard t != (0, 0) else {
+        if t == (0, 0) {
             return (0, 0);
         }
         
@@ -69,19 +69,19 @@ struct Rational {
     
     /// Is the Rational finite?
     /// Returns: False if the denominator is 0, True otherwise
-    func isFinite() -> Bool {
+    var isFinite : Bool {
         return denominator != 0;
     }
     
     /// Is the Rational infinite?
     /// Returns: True if the denominator is 0, False otherwise
-    func isInfinite() -> Bool {
+    var isInfinite : Bool {
         return numerator != 0 && denominator == 0;
     }
     
     /// Is the Rational not a number?
     /// Returns: True if the numerator and denominator are 0, False otherwise
-    func isNaN() -> Bool {
+    var isNaN : Bool {
         return numerator == 0 && denominator == 0;
     }
 }
@@ -89,7 +89,7 @@ struct Rational {
 // MARK: IntegerArithmetic
 extension Rational : IntegerArithmetic {
     static func + (lhs: Rational, rhs: Rational) -> Rational {
-        guard lhs.isFinite() && rhs.isFinite() else {
+        if lhs.isInfinite || rhs.isInfinite {
             return Rational(lhs.numerator + rhs.numerator, 0);
         }
         
@@ -98,7 +98,7 @@ extension Rational : IntegerArithmetic {
     }
     
     static func addWithOverflow(_ lhs: Rational, _ rhs: Rational) -> (Rational, overflow: Bool) {
-        guard lhs.isFinite() && rhs.isFinite() else {
+        if lhs.isInfinite || rhs.isInfinite {
             return (Rational(lhs.numerator + rhs.numerator, 0), false);
         }
         
@@ -112,7 +112,7 @@ extension Rational : IntegerArithmetic {
     }
     
     static func - (lhs: Rational, rhs: Rational) -> Rational {
-        guard lhs.isFinite() && rhs.isFinite() else {
+        if lhs.isInfinite || rhs.isInfinite {
             return Rational(lhs.numerator - rhs.numerator, 0);
         }
         
@@ -121,7 +121,7 @@ extension Rational : IntegerArithmetic {
     }
     
     static func subtractWithOverflow(_ lhs: Rational, _ rhs: Rational) -> (Rational, overflow: Bool) {
-        guard lhs.isFinite() && rhs.isFinite() else {
+        if lhs.isInfinite || rhs.isInfinite {
             return (Rational(lhs.numerator - rhs.numerator, 0), false);
         }
 
@@ -135,7 +135,7 @@ extension Rational : IntegerArithmetic {
     }
 
     static func * (lhs: Rational, rhs: Rational) -> Rational {
-        guard lhs.isFinite() && rhs.isFinite() else {
+        if lhs.isInfinite || rhs.isInfinite {
             return Rational(lhs.numerator * rhs.numerator, 0);
         }
         
@@ -147,7 +147,7 @@ extension Rational : IntegerArithmetic {
     }
     
     static func multiplyWithOverflow(_ lhs: Rational, _ rhs: Rational) -> (Rational, overflow: Bool) {
-        guard lhs.isFinite() && rhs.isFinite() else {
+        if lhs.isInfinite || rhs.isInfinite {
             return (Rational(lhs.numerator * rhs.numerator, 0), false);
         }
 
@@ -169,7 +169,7 @@ extension Rational : IntegerArithmetic {
     }
 
     static func % (lhs: Rational, rhs: Rational) -> Rational {
-        guard lhs.isFinite() && rhs.isFinite() else {
+        if lhs.isInfinite || rhs.isInfinite {
             return Rational(lhs.numerator % rhs.numerator, 0);
         }
 
@@ -178,7 +178,7 @@ extension Rational : IntegerArithmetic {
     }
     
     static func remainderWithOverflow(_ lhs: Rational, _ rhs: Rational) -> (Rational, overflow: Bool) {
-        guard lhs.isFinite() && rhs.isFinite() else {
+        if lhs.isInfinite || rhs.isInfinite {
             return (Rational(lhs.numerator % rhs.numerator, 0), false);
         }
 
@@ -266,9 +266,9 @@ extension Double {
     /// Initialize a Double from a Rational
     /// - Note: If the deonominator is zero, the Double will be initialized to +/- infinity
     init(_ number: Rational) {
-        if number.isFinite() {
+        if number.isFinite {
             self = Double(number.numerator) / Double(number.denominator);
-        } else if number.isInfinite() {
+        } else if number.isInfinite {
             self = number.numerator > 0 ? Double.infinity : -Double.infinity;
         } else {
             self = Double.nan;
