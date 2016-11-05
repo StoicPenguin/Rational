@@ -49,24 +49,24 @@ class RationalTests: XCTestCase {
         let rFin = Rational(2, 1);
         let rInf = Rational(2, 0);
         
-        XCTAssert(rFin.isFinite(), "Incorrect Finite Response \(rFin)");
-        XCTAssert(!rInf.isFinite(), "Incorrect Finite Response \(rInf)");
+        XCTAssert(rFin.isFinite, "Incorrect Finite Response \(rFin)");
+        XCTAssert(!rInf.isFinite, "Incorrect Finite Response \(rInf)");
     }
 
-    func testIsInfinite() {
+    func testIsInFinite() {
         let rFin = Rational(2, 1);
         let rInf = Rational(2, 0);
         
-        XCTAssert(!rFin.isInfinite(), "Incorrect Finite Response \(rFin)");
-        XCTAssert(rInf.isInfinite(), "Incorrect Finite Response \(rInf)");
+        XCTAssert(!rFin.isInfinite, "Incorrect Finite Response \(rFin)");
+        XCTAssert(rInf.isInfinite, "Incorrect Finite Response \(rInf)");
     }
 
     func testNan() {
         let rFin = Rational(2, 1);
         let rNaN = Rational(0, 0);
         
-        XCTAssert(!rFin.isNaN(), "Incorrect NaN Response \(rFin)");
-        XCTAssert(rNaN.isNaN(), "Incorrect NaN Response \(rNaN)");
+        XCTAssert(!rFin.isNaN, "Incorrect NaN Response \(rFin)");
+        XCTAssert(rNaN.isNaN, "Incorrect NaN Response \(rNaN)");
     }
     
     func testAddition() {
