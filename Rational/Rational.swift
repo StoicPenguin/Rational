@@ -238,6 +238,13 @@ extension Rational : CustomStringConvertible {
     }
 }
 
+// MARK: AbsoluteValuable
+extension Rational: AbsoluteValuable {
+    static func abs(_ x: Rational) -> Rational {
+        return Rational(Swift.abs(x.numerator), Swift.abs(x.denominator));
+    }
+}
+
 extension Integer {
     /// Find the Greatest Common Denominator of two Integers
     /// - Parameters:
@@ -245,7 +252,7 @@ extension Integer {
     ///     - b: Second Integer
     /// - Returns: The GCD of the given Integers
     static func gcd(_ a: Self, _ b: Self) -> Self {
-        return b == 0 ? a : Self.gcd(b, a % b);
+        return b == 0 ? a : gcd(b, a % b);
     }
     
     /// Find the Least Common Multiple of the two Integers
@@ -264,14 +271,14 @@ extension Integer {
 
 extension Double {
     /// Initialize a Double from a Rational
-    /// - Note: If the deonominator is zero, the Double will be initialized to +/- infinity
+    /// - Note: If the denominator is zero, the Double will be initialized to +/- infinity
     init(_ number: Rational) {
         if number.isFinite {
             self = Double(number.numerator) / Double(number.denominator);
         } else if number.isInfinite {
-            self = number.numerator > 0 ? Double.infinity : -Double.infinity;
+            self = number.numerator > 0 ? .infinity : -.infinity;
         } else {
-            self = Double.nan;
+            self = .nan;
         }
     }
 
